@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import styled, { createGlobalStyle, css, keyframes } from "styled-components";
+import styled, {
+  createGlobalStyle,
+  css,
+  keyframes,
+  ThemeProvider
+} from "styled-components";
+import theme from "./theme";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -8,64 +14,43 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Card = styled.div`
+  background-color: red;
+`;
+
+const Container = styled.div`
+  height: 100vh;
+  width: 100%;
+  ${Card} {
+    background-color: ${(props) => props.theme.successColor};
+  }
+`;
+
+const Button = styled.button`
+  border-radius: 30px;
+  padding: 25px 15px;
+  background-color: ${(props) => props.theme.dangerColor};
+`;
+
 class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <GlobalStyle />
-        <Container>
-          <Button>Hello</Button>
-          <Button danger rotationTime={5}>
-            Hello
-          </Button>
-          <Button>
-            <Acnchor href="http://google.com">go to google</Acnchor>
-          </Button>
-        </Container>
+        <ThemeProvider theme={theme}>
+          <Container>
+            <GlobalStyle />
+            <Form />
+          </Container>
+        </ThemeProvider>
       </React.Fragment>
     );
   }
 }
 
-const Container = styled.div`
-  height: 100vh;
-  width: 100%;
-  background-color: pink;
-`;
-
-const Button = styled.button`
-  border-radius: 50px;
-  padding: 5px;
-  min-width: 120px;
-  color: white;
-  font-weight: 600;
-  -webkit-appearance: none;
-  cursor: pointer;
-  &:active,
-  &:focus {
-    outline: none;
-  }
-  background-color: ${(props) => (props.danger ? "#e74c3c" : "#2ecc71")};
-  ${(props) => {
-    if (props.danger) {
-      return css`
-        animation: ${rotation} ${props.rotationTime}s linear infinite;
-      `;
-    }
-  }}
-`;
-
-const Acnchor = styled("a")`
-  text-decoration: none;
-`;
-
-const rotation = keyframes`
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
-`;
+const Form = () => (
+  <Card>
+    <Button>Hello</Button>
+  </Card>
+);
 
 export default App;
